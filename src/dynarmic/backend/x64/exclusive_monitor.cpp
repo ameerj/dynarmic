@@ -42,6 +42,7 @@ bool ExclusiveMonitor::CheckAndClear(size_t processor_id, VAddr address) {
             other_address = INVALID_EXCLUSIVE_ADDRESS;
         }
     }
+    Unlock();
     return true;
 }
 
