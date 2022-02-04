@@ -6,6 +6,7 @@
 #include "dynarmic/interface/exclusive_monitor.h"
 
 #include <algorithm>
+#include <thread>
 
 #include "dynarmic/common/assert.h"
 
@@ -21,7 +22,9 @@ size_t ExclusiveMonitor::GetProcessorCount() const {
 }
 
 void ExclusiveMonitor::Lock() {
-    while (is_locked.test_and_set(std::memory_order_acquire)) {}
+    while (is_locked.test_and_set(std::memory_order_acquire)) {
+        std::this_thread::yield();
+    }
 }
 
 void ExclusiveMonitor::Unlock() {
